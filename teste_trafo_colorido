@@ -1,0 +1,33 @@
+import schemdraw.elements as elm  # Possui os elementos elétricos já prontos
+from schemdraw.segments import Segment # Criar seus próprios elementos
+import schemdraw  # Realizar os desenhos elétricos
+from schemdraw.segments import SegmentText
+from schemdraw.segments import *
+
+class Transformador(elm.Element):
+    def __init__(self, cor_primario=None, cor_secundario=None, conexao=None,teta=None,**kwargs):
+        super().__init__(**kwargs)
+        raio = 0.5
+        braco = 0.5  # comprimento dos braços (ajustável)
+
+        # Bobinas (círculos)
+        self.segments.append(SegmentCircle((-raio * 0.7, 0), raio, fill=None, color=cor_primario))   # Esquerda
+        self.segments.append(SegmentCircle((raio * 0.7, 0), raio, fill=None, color=cor_secundario))    # Direita
+
+        # Braços com base em 'braco'
+        self.segments.append(Segment([(-raio * 0.7 - raio, 0), (-raio * 0.7 - raio - braco, 0)], color=cor_primario))  # Primário
+        self.segments.append(Segment([(raio * 0.7 + raio, 0), (raio * 0.7 + raio + braco, 0)], color=cor_secundario))    # Secundário
+
+        # Pontos de conexão finais (anchors nas pontas dos braços)
+        self.anchors['p'] = (-raio * 0.7 - raio - braco, 0)
+        self.anchors['s'] = (raio * 0.7 + raio + braco, 0)
+
+        # Rótulos conexao
+        self.segments.append(SegmentText((-raio, 0), conexao.split("-")[0], fontsize = 12, align=('left', 'center'), color=cor_primario, rotation=teta))
+        self.segments.append(SegmentText((raio, 0), conexao.split("-")[1], fontsize = 12, align=('center', 'top'), color=cor_secundario, rotation=teta))
+
+
+with schemdraw.Drawing() as d:
+    trafo = Transformador(cor_primario="#FF0606", cor_secundario="#F60B0B", conexao="YT-D", teta=30).theta(30)
+
+
