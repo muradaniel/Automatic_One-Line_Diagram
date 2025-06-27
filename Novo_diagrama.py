@@ -1,26 +1,23 @@
 #----------------------------------------------------------------------------------------------------------------------
 #------------------------------------------------ BIBLIOTECAS ---------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------------------
-print("Alterações aqui....")
 
-import schemdraw.elements as elm  # Possui os elementos elétricos já prontos
-from schemdraw.segments import Segment # Criar seus próprios elementos
-import pandas as pd  # Trabalhar com tabelas e planilhas
-import seaborn as sns # Geração de cores automáticas
-import schemdraw  # Realizar os desenhos elétricos
-import networkx as nx # Organizar barramentos
-import numpy as np  # Biblioteca matemática
-import matplotlib.pyplot as plt
-import xlwings as xw
-import math # cálculos matemáticos
-from schemdraw.segments import *
-import itertools
-import fitz
-from datetime import datetime
-import os
-import ctypes
 from schemdraw.segments import SegmentText
-
+from schemdraw.segments import Segment # Criar seus próprios elementos
+import schemdraw.elements as elm  # Possui os elementos elétricos já prontos
+from schemdraw.segments import *
+from datetime import datetime
+import seaborn as sns # Geração de cores automáticas
+import networkx as nx # Organizar barramentos
+import xlwings as xw
+import pandas as pd  # Trabalhar com tabelas e planilhas
+import schemdraw  # Realizar os desenhos elétricos
+import itertools
+import math # cálculos matemáticos
+import fitz
+import ctypes
+import os
+import matplotlib.pyplot as plt
 
 #----------------------------------------------------------------------------------------------------------------------
 #--------------------------------------- FUNÇÕES & CLASSES ------------------------------------------------------------
@@ -28,9 +25,8 @@ from schemdraw.segments import SegmentText
 
 class Tabelas:
     inicio_dados = 4
-    caminho_excel = r"G:\Meu Drive\01 - Faculdade\Análise de Sistemas de Potência\ASP 1\Trabalho\Trabalho 9 Barras\Trabalho_ASP1_25_1.xlsm"
+    caminho_excel = r"C:\Users\danie\Downloads\Trabalho_ASP1_25_1.xlsm"
     # caminho_excel = input("Entre com Caminho:\n")
-    # caminho_excel = r"G:\Meu Drive\01 - Faculdade\Análise de Sistemas de Potência\ASP 1\Trabalho_do_Capeta.xlsm"
     def __init__(self):
         self.Barra = pd.read_excel(fr"{self.caminho_excel}", sheet_name="Barra", header=self.inicio_dados)
         self.Maquina = pd.read_excel(fr"{self.caminho_excel}", sheet_name="Maquina", header=self.inicio_dados)
@@ -66,13 +62,13 @@ def Grafo():
     G.add_nodes_from(tabelas.Transformador_3E["Nome"].tolist()) # Cria os nós dos Transformadores de 3 Enrolamentos
 
     G.add_edges_from(list(zip(ligacao_entre_elementos["Elemento"].tolist(), ligacao_entre_elementos["Barra conectada"].tolist()))) # Cria as ligações entre os nós (arestas)
-    posicao_elementos = nx.spring_layout(G, scale=6, iterations=15000, threshold=1e-8, seed=300) # Esolher a tipo de Organização do Grafo, espaçamento entre os nós, e número de iterações
+    posicao_elementos = nx.spring_layout(G, scale=8, iterations=300000, threshold=1e-10) # Esolher a tipo de Organização do Grafo, espaçamento entre os nós, e número de iterações
     return G, posicao_elementos
 
 
 # Essa função tem como objetivo gerar cores para diferentes níveis de tensão
 def Gera_Cores_Tensoes(niveis_de_tensoes):  # lista de Tensões
-    cores_tensoes = sns.color_palette("Set1", len(niveis_de_tensoes))  # Gera as cores
+    cores_tensoes = sns.color_palette("tab10", len(niveis_de_tensoes))  # Gera as cores
     dicionario_cores = dict(
         zip(niveis_de_tensoes, cores_tensoes))  # Cria um dicionário com a tensão como chave e a cor como valor
     return dicionario_cores
@@ -149,8 +145,14 @@ def tratamento_trafo_3e(posicao_barra_p, posicao_barra_s, posicao_barra_t, posic
 G, posicao_elementos = Grafo()
 
 for key, value in posicao_elementos.items(): # Esse laço de repetição tem como objetivo deixar o desenho retângular largura x altura
-    posicao_elementos[key][0] *= 6
-    posicao_elementos[key][1] *= 4
+    posicao_elementos[key][0] *= 8
+    posicao_elementos[key][1] *= 6
+
+nx.draw(G, pos=posicao_elementos, with_labels=True, node_color='blue', edge_color='black', node_size=1000, font_size=12)
+plt.title("Meu Grafo")
+plt.show()
+
+
 
 dicionario_cores = Gera_Cores_Tensoes(tabelas.Barra["Tensão (kV)"].tolist())
 caminho_diagrama = tabelas.caminho_excel.replace("xlsm", "pdf")
@@ -178,30 +180,60 @@ class Barramento(elm.Element):
 
 # # Criando trafo de três enrolamentos
 class Trafo_3_enrolamentos(elm.Element):
-    def __init__(self, **kwargs):
+    def __init__(self, cor_primario=None, cor_secundario=None, cor_terciario=None, conexao=None, **kwargs):
         super().__init__(**kwargs)
-        raio = 0.3
+        raio = 0.6
         braco = 0.5  # comprimento dos braços (ajustável)
 
         # Bobinas (círculos)
-        self.segments.append(SegmentCircle((-raio * 0.7, 0), raio, fill=None))   # Esquerda
-        self.segments.append(SegmentCircle((raio * 0.7, 0), raio, fill=None))    # Direita
-        self.segments.append(SegmentCircle((0, -raio * 1.2), raio, fill=None))   # Inferior
+        self.segments.append(SegmentCircle((-raio * 0.7, 0), raio, fill=None, color=cor_primario))   # Esquerda
+        self.segments.append(SegmentCircle((raio * 0.7, 0), raio, fill=None, color=cor_secundario))    # Direita
+        self.segments.append(SegmentCircle((0, -raio * 1.2), raio, fill=None, color=cor_terciario))   # Inferior
 
         # Braços com base em 'braco'
-        self.segments.append(Segment([(-raio * 0.7 - raio, 0), (-raio * 0.7 - raio - braco, 0)]))  # Primário
-        self.segments.append(Segment([(raio * 0.7 + raio, 0), (raio * 0.7 + raio + braco, 0)]))    # Secundário
-        self.segments.append(Segment([(0, -raio * 1.2 - raio), (0, -raio * 1.2 - raio - braco)]))  # Terciário
+        self.segments.append(Segment([(-raio * 0.7 - raio, 0), (-raio * 0.7 - raio - braco, 0)], color=cor_primario))  # Primário
+        self.segments.append(Segment([(raio * 0.7 + raio, 0), (raio * 0.7 + raio + braco, 0)], color=cor_secundario))    # Secundário
+        self.segments.append(Segment([(0, -raio * 1.2 - raio), (0, -raio * 1.2 - raio - braco)], color=cor_terciario))  # Terciário
 
         # Pontos de conexão finais (anchors nas pontas dos braços)
         self.anchors['p'] = (-raio * 0.7 - raio - braco, 0)
         self.anchors['s'] = (raio * 0.7 + raio + braco, 0)
         self.anchors['t'] = (0, -raio * 1.2 - raio - braco)
+        
+        if conexao is not None:
+            if "D" in conexao:
+                conexao = conexao.replace("D", "Δ")
 
-        # Rótulos nos braços
-        self.segments.append(SegmentText((self.anchors['p'][0] - 0.05, 0.1), 'P', fontsize = 7, align=('right', 'center')))
-        self.segments.append(SegmentText((self.anchors['s'][0] + 0.05, 0.1), 'S', fontsize = 7, align=('left', 'center')))
-        self.segments.append(SegmentText((0.1, self.anchors['t'][1] - 0.1), 'T', fontsize = 7, align=('center', 'top')))
+            if "T" in conexao:
+                conexao = conexao.replace("T", "t")
+            # Rótulos conexao
+            self.segments.append(
+                SegmentText(
+                    (-raio, 0),
+                    conexao.split("-")[0],
+                    fontsize=12,
+                    align=('center', 'center'),  # CENTRALIZA no ponto (raio, 0)
+                    color=cor_primario
+                )
+            )
+            self.segments.append(
+            SegmentText(
+                (raio, 0),
+                conexao.split("-")[1],
+                fontsize=12,
+                align=('center', 'center'),  # CENTRALIZA no ponto (raio, 0)
+                color=cor_secundario
+            )
+        )
+            self.segments.append(
+            SegmentText(
+                (0, -raio),
+                conexao.split("-")[2],
+                fontsize=12,
+                align=('center', 'center'),  # CENTRALIZA no ponto (raio, 0)
+                color=cor_terciario
+            )
+        )
 
 
 # # Criando raio do curto
@@ -213,7 +245,7 @@ class Curto(elm.ElementImage):
         )
 
 class Transformador(elm.Element):
-    def __init__(self, cor_primario=None, cor_secundario=None, conexao=None, teta=None, **kwargs):
+    def __init__(self, cor_primario=None, cor_secundario=None, conexao=None, **kwargs):
         super().__init__(**kwargs)
         raio = 0.6
         braco = 0.5  # comprimento dos braços (ajustável)
@@ -235,9 +267,6 @@ class Transformador(elm.Element):
 
         if "T" in conexao:
             conexao = conexao.replace("T", "t")
-
-
-            # conexao = conexao.replace("T", "t")
 
         # Rótulos conexao
         self.segments.append(
@@ -284,6 +313,7 @@ with schemdraw.Drawing(file=fr"{caminho_diagrama}", dpi=150, theme='grade3', sho
         posicao_gerador = posicao_elementos[nome]
         posicao_barra = posicao_elementos[barra]
         conexao = row['Tipo de Conexão']
+        
 
         teta = math.degrees(math.atan2(posicao_elementos[nome][1] - posicao_elementos[barra][1], posicao_elementos[nome][0] - posicao_elementos[barra][0]))
         d += elm.Line().at(posicao_barra).to(posicao_gerador).color(dicionario_cores[tensao])
@@ -359,10 +389,11 @@ with schemdraw.Drawing(file=fr"{caminho_diagrama}", dpi=150, theme='grade3', sho
         posicao_barra_t = posicao_elementos[barra_t]
         posicao_transformador_3e = posicao_elementos[row["Nome"]]
         potencia = row["Potência Nominal (MVA)"]
+        conexao = row['Tipo de Conexão']
         nome = row["Nome"]
         
         melhor_teta, melhor_flip, melhor_reverse = tratamento_trafo_3e(posicao_barra_p, posicao_barra_s, posicao_barra_t, posicao_transformador_3e, d)
-        trafo = Trafo_3_enrolamentos().at(posicao_transformador_3e).label(f"{nome}\n{tensao_p}-{tensao_s}-{tensao_t} kV\n{potencia} MVA").theta(melhor_teta)
+        trafo = Trafo_3_enrolamentos(cor_primario=dicionario_cores[tensao_p], cor_secundario=dicionario_cores[tensao_s], cor_terciario=dicionario_cores[tensao_t], conexao=conexao).at(posicao_transformador_3e).label(f"{nome}\n{tensao_p}-{tensao_s}-{tensao_t} kV\n{potencia} MVA").theta(melhor_teta)
         if melhor_flip:
             trafo = trafo.flip()
 
