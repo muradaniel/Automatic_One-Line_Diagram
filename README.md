@@ -23,4 +23,21 @@ https://pandas.pydata.org/docs/
 
 ---
 ***Como Usar:***
+Há diversos parâmetros que podem ser configurados para se obter o diagrama da forma desejada. são eles:
+- Aproximadamente linha 65:
+"posicao_elementos = nx.spring_layout(G, scale=8, iterations=300000, threshold=1e-10)" 
 
+_nx.spring_layout_ modelo de organização de grafos, opções:
+spring_layout → modelo de molas
+circular_layout → em círculo
+shell_layout → camadas concêntricas
+kamada_kawai_layout → distâncias preservadas
+random_layout → posições aleatórias
+spectral_layout → autovalores
+planar_layout → sem cruzamentos (grafo planar)
+spiral_layout → em espiral
+bipartite_layout(G, nodes) → dois grupos (bipartido)
+
+_scale_ espaço esntre os vértices dos grafos (Elementos), número maior que zero.
+
+_iterations_ Basicamente número de iterações que o grafo tenta para obter a melhor organização.

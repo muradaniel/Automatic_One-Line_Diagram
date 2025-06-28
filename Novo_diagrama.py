@@ -17,15 +17,15 @@ import math # cálculos matemáticos
 import fitz
 import ctypes
 import os
-import matplotlib.pyplot as plt
+
 
 #----------------------------------------------------------------------------------------------------------------------
 #--------------------------------------- FUNÇÕES & CLASSES ------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------------------
 
 class Tabelas:
-    inicio_dados = 4
-    caminho_excel = r"C:\Users\danie\Downloads\Trabalho_ASP1_25_1.xlsm"
+    inicio_dados = 0
+    caminho_excel = r"Arquivo_Cadastro_Elementos.xlsm"
     # caminho_excel = input("Entre com Caminho:\n")
     def __init__(self):
         self.Barra = pd.read_excel(fr"{self.caminho_excel}", sheet_name="Barra", header=self.inicio_dados)
@@ -148,11 +148,11 @@ for key, value in posicao_elementos.items(): # Esse laço de repetição tem com
     posicao_elementos[key][0] *= 8
     posicao_elementos[key][1] *= 6
 
-nx.draw(G, pos=posicao_elementos, with_labels=True, node_color='blue', edge_color='black', node_size=1000, font_size=12)
-plt.title("Meu Grafo")
-plt.show()
-
-
+# Caso o usuário queira observar o grafo
+#import matplotlib.pyplot as plt
+#nx.draw(G, pos=posicao_elementos, with_labels=True, node_color='skyblue', edge_color='black', node_size=1000, font_size=12)
+#plt.title("Meu Grafo")
+#plt.show()
 
 dicionario_cores = Gera_Cores_Tensoes(tabelas.Barra["Tensão (kV)"].tolist())
 caminho_diagrama = tabelas.caminho_excel.replace("xlsm", "pdf")
@@ -240,7 +240,7 @@ class Trafo_3_enrolamentos(elm.Element):
 class Curto(elm.ElementImage):
     def __init__(self):
         super().__init__(
-            r"G:\Meu Drive\01 - Faculdade\Análise de Sistemas de Potência\ASP 1\Trabalho\raio.png",
+            r"raio.png",
             width=1.2, height=1.3
         )
 
