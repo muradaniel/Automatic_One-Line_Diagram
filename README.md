@@ -22,12 +22,12 @@ https://networkx.org/documentation/stable/
 https://pandas.pydata.org/docs/
 
 ---
-***Como Usar:***
+## Como Usar
 Há diversos parâmetros que podem ser configurados para se obter o diagrama da forma desejada. são eles:
 - Aproximadamente linha 65:
 "posicao_elementos = nx.spring_layout(G, scale=8, iterations=300000, threshold=1e-10)" 
 
-_nx.spring_layout_ modelo de organização de grafos, opções:
+***nx.spring_layout*** modelo de organização de grafos, opções:
 spring_layout → modelo de molas
 circular_layout → em círculo
 shell_layout → camadas concêntricas
@@ -38,6 +38,37 @@ planar_layout → sem cruzamentos (grafo planar)
 spiral_layout → em espiral
 bipartite_layout(G, nodes) → dois grupos (bipartido)
 
-_scale_ espaço esntre os vértices dos grafos (Elementos), número maior que zero.
+***scale*** espaço esntre os vértices dos grafos (Elementos), número maior que zero.
 
-_iterations_ Basicamente número de iterações que o grafo tenta para obter a melhor organização.
+***iterations*** Basicamente número de iterações que o grafo tenta para obter a melhor organização.
+
+
+- Aproximadamente linha 71:
+"cores_tensoes = sns.color_palette("tab10", len(niveis_de_tensoes))"
+Essa linha tem como objetivo gerar as cores de forma automática, porém a paleta de cores pode ser alterada.
+opções:
+| Paleta         | Palavra-chave            |
+| -------------- | ------------------------ |
+| `"deep"`       | **Padrão elegante**      |
+| `"muted"`      | **Suave**                |
+| `"bright"`     | **Vibrante**             |
+| `"pastel"`     | **Clara/Suave**          |
+| `"dark"`       | **Escura**               |
+| `"colorblind"` | **Acessível**            |
+| `"tab10"`      | **Clássica**             |
+| `"Set1"`       | **Forte**                |
+| `"Set2"`       | **Moderada**             |
+| `"Set3"`       | **Variada**              |
+| `"Paired"`     | **Duplas contrastantes** |
+
+
+- Aproximadamente linha 148:
+"posicao_elementos[key][0] *= 8"
+"posicao_elementos[key][1] *= 6"
+Esses numeros podem ser altrados para atingir uma melhor proporção X e Y, a depender se deseja imprimir, tamanho do monitor etc.
+
+
+
+- Aproximadamente linha 296:
+"d.config(fontsize=7)"
+Ajustar o tamanho dos textos dos elemntos no diagrama
