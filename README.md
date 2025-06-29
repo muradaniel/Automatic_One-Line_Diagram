@@ -71,4 +71,7 @@ Esses numeros podem ser altrados para atingir uma melhor proporção X e Y, a de
 
 - Aproximadamente linha 296:  
 "d.config(fontsize=7)"  
-Ajustar o tamanho dos textos dos elemntos no diagrama  
+Ajustar o tamanho dos textos dos elemntos no diagrama 
+
+<embed src="C:\Users\danie\PycharmProjects\Xlwings\Arquivo_Cadastro_Elementos_Final_Legendado.pdf" width="100%" height="600px" />
+
