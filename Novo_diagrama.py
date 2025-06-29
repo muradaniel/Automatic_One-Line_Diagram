@@ -4,6 +4,7 @@
 
 from schemdraw.segments import SegmentText
 from schemdraw.segments import Segment # Criar seus próprios elementos
+from schemdraw import flow
 import schemdraw.elements as elm  # Possui os elementos elétricos já prontos
 from schemdraw.segments import *
 from datetime import datetime
@@ -62,7 +63,7 @@ def Grafo():
     G.add_nodes_from(tabelas.Transformador_3E["Nome"].tolist()) # Cria os nós dos Transformadores de 3 Enrolamentos
 
     G.add_edges_from(list(zip(ligacao_entre_elementos["Elemento"].tolist(), ligacao_entre_elementos["Barra conectada"].tolist()))) # Cria as ligações entre os nós (arestas)
-    posicao_elementos = nx.kamada_kawai_layout(G, scale=60) # Esolher a tipo de Organização do Grafo, espaçamento entre os nós, e número de iterações
+    posicao_elementos = nx.kamada_kawai_layout(G, scale=75) # Esolher a tipo de Organização do Grafo, espaçamento entre os nós, e número de iterações
     return G, posicao_elementos
 
 
@@ -144,15 +145,11 @@ def tratamento_trafo_3e(posicao_barra_p, posicao_barra_s, posicao_barra_t, posic
 
 G, posicao_elementos = Grafo()
 
-# for key, value in posicao_elementos.items(): # Esse laço de repetição tem como objetivo deixar o desenho retângular largura x altura
-#     posicao_elementos[key][0] *= 8
-#     posicao_elementos[key][1] *= 6
-
 # Caso o usuário queira observar o grafo
-#import matplotlib.pyplot as plt
-#nx.draw(G, pos=posicao_elementos, with_labels=True, node_color='skyblue', edge_color='black', node_size=1000, font_size=12)
-#plt.title("Meu Grafo")
-#plt.show()
+import matplotlib.pyplot as plt
+nx.draw(G, pos=posicao_elementos, with_labels=True, node_color='skyblue', edge_color='black', node_size=1000, font_size=12)
+plt.title("Meu Grafo")
+plt.show()
 
 dicionario_cores = Gera_Cores_Tensoes(tabelas.Barra["Tensão (kV)"].tolist())
 caminho_diagrama = tabelas.caminho_excel.replace("xlsm", "pdf")
