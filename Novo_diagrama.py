@@ -62,7 +62,7 @@ def Grafo():
     G.add_nodes_from(tabelas.Transformador_3E["Nome"].tolist()) # Cria os nós dos Transformadores de 3 Enrolamentos
 
     G.add_edges_from(list(zip(ligacao_entre_elementos["Elemento"].tolist(), ligacao_entre_elementos["Barra conectada"].tolist()))) # Cria as ligações entre os nós (arestas)
-    posicao_elementos = nx.spring_layout(G, scale=8, iterations=300000, threshold=1e-10) # Esolher a tipo de Organização do Grafo, espaçamento entre os nós, e número de iterações
+    posicao_elementos = nx.kamada_kawai_layout(G, scale=60) # Esolher a tipo de Organização do Grafo, espaçamento entre os nós, e número de iterações
     return G, posicao_elementos
 
 
@@ -144,9 +144,9 @@ def tratamento_trafo_3e(posicao_barra_p, posicao_barra_s, posicao_barra_t, posic
 
 G, posicao_elementos = Grafo()
 
-for key, value in posicao_elementos.items(): # Esse laço de repetição tem como objetivo deixar o desenho retângular largura x altura
-    posicao_elementos[key][0] *= 8
-    posicao_elementos[key][1] *= 6
+# for key, value in posicao_elementos.items(): # Esse laço de repetição tem como objetivo deixar o desenho retângular largura x altura
+#     posicao_elementos[key][0] *= 8
+#     posicao_elementos[key][1] *= 6
 
 # Caso o usuário queira observar o grafo
 #import matplotlib.pyplot as plt
@@ -356,7 +356,8 @@ with schemdraw.Drawing(file=fr"{caminho_diagrama}", dpi=150, theme='grade3', sho
         posicao_linha = posicao_elementos[row["Nome"]]
         tensao = row["Tensão (kV)"]
         teta = math.degrees(math.atan2(posicao_barra_para[1] - posicao_barra_de[1], posicao_barra_para[0] - posicao_barra_de[0]))
-        d += elm.Line().at(posicao_barra_de).to(posicao_barra_para).color(dicionario_cores[tensao]).label(f"{nome}")
+        d+= elm.Line().at(posicao_barra_de).to(posicao_linha).color(dicionario_cores[tensao]).label(f"{nome}")
+        d+= elm.Line().at(posicao_linha).to(posicao_barra_para).color(dicionario_cores[tensao]).label(f"{nome}")
 
 
 # Desenhando o Elemento Carga **************************************************************************************
