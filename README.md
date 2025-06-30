@@ -1,77 +1,87 @@
-# [Diagrama Unifilar Automático](https://www.google.com/?hl=pt-BR)
-***Contexto:***
-Durante uma disciplina do curso de Engenharia Elétrica, foi proposto o desenvolvimento de uma ferramenta para cálculo de curto-circuito em sistemas elétricos de potência, semelhante ao simulador Anafas. O método adotado utilizava a entrada de dados via planilhas do Excel, contendo o cadastro dos barramentos, linhas de transmissão, transformadores e cargas shunt.
+# [Automatic One-Line Diagram](https://www.google.com/?hl=pt-BR)  
+***Context:***  
+During an Electrical Engineering course, we were tasked with developing a tool to perform short-circuit calculations in electric power systems, similar to the Anafas simulator. The method used relied on Excel spreadsheets as data input, registering buses, transmission lines, transformers, and shunt loads.
 
-Após a leitura dos elementos e a realização dos cálculos de curto-circuito, tensões nos barramentos e correntes nos trechos, percebi uma limitação importante: a entrada de dados exclusivamente por tabela tornava a visualização do sistema muito abstrata. Isso aumentava a suscetibilidade a erros de digitação e conexões incorretas — principalmente em sistemas com grande número de barramentos e equipamentos conectados.
+After reading the elements and performing short-circuit calculations, as well as computing bus voltages and branch currents, I noticed an important limitation: inputting data solely through tables made system visualization very abstract. This increased the chances of typing errors and incorrect connections — especially in systems with a large number of buses and connected equipment.
 
-Com isso, encontrei a biblioteca Schemdraw, em Python, que apresenta uma documentação excelente e permite a criação de circuitos elétricos e eletrônicos, diagramas de blocos, fluxogramas e desenhos técnicos com alta qualidade, exportáveis em diversos formatos (PDF, PNG, JPEG, etc.).
+To address this, I found the Schemdraw library in Python, which has excellent documentation and allows for the creation of high-quality electrical and electronic circuits, block diagrams, flowcharts, and technical drawings, exportable in various formats (PDF, PNG, JPEG, etc.).
 
-A ideia, então, foi utilizar Python para ler as planilhas de dados do sistema e gerar automaticamente o diagrama unifilar correspondente, de forma organizada e conectada. A maior dificuldade esteve na organização visual dos elementos, especialmente na prevenção de sobreposição ou cruzamentos entre conexões.
+The idea, then, was to use Python to read the system data from spreadsheets and automatically generate the corresponding one-line diagram in an organized and connected manner. The greatest challenge was organizing the elements visually, especially to avoid overlapping or intersecting connections.
 
-Para resolver esse desafio, utilizei conceitos de teoria dos grafos, com o auxílio da biblioteca NetworkX, o que permitiu organizar o circuito de maneira limpa e compreensível. Como a biblioteca Schemdraw não é voltada especificamente para sistemas elétricos de potência, desenvolvi novos elementos personalizados, como símbolos de barramento, transformadores de dois e três enrolamentos e o símbolo de curto-circuito.
+To solve this, I applied graph theory concepts with the help of the NetworkX library, which allowed for a clean and understandable circuit layout. Since Schemdraw is not specifically tailored to power systems, I developed custom elements such as bus symbols, two- and three-winding transformers, and a short-circuit symbol.
 
-Com a base do diagrama pronta, passei à etapa de personalização: colorindo os elementos conforme seus níveis de tensão, adicionando margens e uma legenda — semelhante ao que se vê em desenhos técnicos —, incluindo as principais informações do curto-circuito no barramento em falta.
+With the diagram foundation ready, I moved on to the customization stage: coloring elements according to their voltage levels, adding margins and a legend — similar to what is seen in technical drawings — and including key short-circuit information at the faulted bus.
 
-Além de enriquecer a visualização e facilitar a interpretação dos sistemas simulados, essa ferramenta pode ser especialmente útil quando utilizada em conjunto com simuladores que não apresentam diagrama unifilar integrado, como é o caso do Simulight e do Anatem, proporcionando uma interface visual complementar que aumenta a confiabilidade e compreensão dos resultados.
+Besides enriching visualization and making simulated systems easier to interpret, this tool can be especially useful when used alongside simulators that don’t have an integrated one-line diagram, such as Simulight and Anatem. It provides a complementary visual interface that improves the reliability and understanding of the results.
 
-Por fim, deixo alguns dos diagramas gerados pela aplicação como exemplos e agradeço ao Rafael de Castro Roque e ao Gabriel Bié da Fonseca pelas críticas e sugestões construtivas ao longo do desenvolvimento deste trabalho. Ferramenta desenvolvida dispoível no meu Github e em meu site.
+Finally, I include some diagrams generated by the application as examples, and I thank Rafael de Castro Roque and Gabriel Bié da Fonseca for their valuable feedback and constructive suggestions throughout the development of this project. The tool is available on my GitHub and website.
 
-Referências:  
+References:  
 https://schemdraw.readthedocs.io/en/stable/  
 https://networkx.org/documentation/stable/  
 https://pandas.pydata.org/docs/
 
 ---
-## Como Usar  
-Há diversos parâmetros que podem ser configurados para se obter o diagrama da forma desejada. são eles:  
-- Aproximadamente linha 65:  
-"posicao_elementos = nx.spring_layout(G, scale=8, iterations=300000, threshold=1e-10)"   
 
-***nx.spring_layout*** modelo de organização de grafos, opções:  
-spring_layout → modelo de molas  
-circular_layout → em círculo  
-shell_layout → camadas concêntricas  
-kamada_kawai_layout → distâncias preservadas  
-random_layout → posições aleatórias  
-spectral_layout → autovalores  
-planar_layout → sem cruzamentos (grafo planar)  
-spiral_layout → em espiral  
-bipartite_layout(G, nodes) → dois grupos (bipartido)  
+## How to Use  
+There are several parameters that can be configured to generate the diagram in the desired format. These include:  
 
-***scale*** espaço esntre os vértices dos grafos (Elementos), número maior que zero.  
+- Around line 65:  
+```python  
+posicao_elementos = nx.spring_layout(G, scale=8, iterations=300000, threshold=1e-10)
+```
 
-***iterations*** Basicamente número de iterações que o grafo tenta para obter a melhor organização.  
+***nx.spring_layout*** — Graph layout model, options:  
+- `spring_layout` → spring model  
+- `circular_layout` → arranged in a circle  
+- `shell_layout` → concentric layers  
+- `kamada_kawai_layout` → distance-preserving  
+- `random_layout` → random positions  
+- `spectral_layout` → based on eigenvalues  
+- `planar_layout` → no crossings (planar graph)  
+- `spiral_layout` → spiral arrangement  
+- `bipartite_layout(G, nodes)` → two groups (bipartite)
 
+***scale*** — spacing between graph vertices (elements), any number greater than zero.  
 
-- Aproximadamente linha 71:  
-"cores_tensoes = sns.color_palette("tab10", len(niveis_de_tensoes))"  
-Essa linha tem como objetivo gerar as cores de forma automática, porém a paleta de cores pode ser alterada.
-opções:  
-| Paleta         | Palavra-chave            |  
-| -------------- | ------------------------ |  
-| `"deep"`       | **Padrão elegante**      |  
-| `"muted"`      | **Suave**                |  
-| `"bright"`     | **Vibrante**             |  
-| `"pastel"`     | **Clara/Suave**          |  
-| `"dark"`       | **Escura**               |  
-| `"colorblind"` | **Acessível**            |  
-| `"tab10"`      | **Clássica**             |  
-| `"Set1"`       | **Forte**                |  
-| `"Set2"`       | **Moderada**             |  
-| `"Set3"`       | **Variada**              |  
-| `"Paired"`     | **Duplas contrastantes** |  
+***iterations*** — basically the number of times the layout algorithm attempts to optimize element positions.  
 
 
-- Aproximadamente linha 148:  
-"posicao_elementos[key][0] *= 8"  
-"posicao_elementos[key][1] *= 6"  
-Esses numeros podem ser altrados para atingir uma melhor proporção X e Y, a depender se deseja imprimir, tamanho do monitor etc.
+- Around line 71:  
+```python
+cores_tensoes = sns.color_palette("tab10", len(niveis_de_tensoes))
+```
+This line automatically generates colors, but the color palette can be changed.  
+Options:  
+| Palette         | Keyword                  |  
+| --------------- | ------------------------ |  
+| `"deep"`        | **Elegant default**      |  
+| `"muted"`       | **Soft**                 |  
+| `"bright"`      | **Vibrant**              |  
+| `"pastel"`      | **Light/Soft**           |  
+| `"dark"`        | **Dark**                 |  
+| `"colorblind"`  | **Accessible**           |  
+| `"tab10"`       | **Classic**              |  
+| `"Set1"`        | **Bold**                 |  
+| `"Set2"`        | **Moderate**             |  
+| `"Set3"`        | **Varied**               |  
+| `"Paired"`      | **Contrasting pairs**    |  
 
 
+- Around line 148:  
+```python
+posicao_elementos[key][0] *= 8
+posicao_elementos[key][1] *= 6
+```
+These numbers can be adjusted to achieve a better X/Y ratio, depending on whether you plan to print, the size of the screen, etc.
 
-- Aproximadamente linha 296:  
-"d.config(fontsize=7)"  
-Ajustar o tamanho dos textos dos elemntos no diagrama 
 
+- Around line 296:  
+```python
+d.config(fontsize=7)
+```
+Adjusts the font size of the element labels in the diagram.
+
+```html
 <embed src="C:\Users\danie\PycharmProjects\Xlwings\Arquivo_Cadastro_Elementos_Final_Legendado.pdf" width="100%" height="600px" />
-
+```
