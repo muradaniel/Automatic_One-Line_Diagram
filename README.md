@@ -1,5 +1,6 @@
 # [Automatic One-Line Diagram](https://www.google.com/?hl=pt-BR)  
-***Context:***  
+<details>
+  <summary>***Context***</summary>
 During an Electrical Engineering course, we were tasked with developing a tool to perform short-circuit calculations in electric power systems, similar to the Anafas simulator. The method used relied on Excel spreadsheets as data input, registering buses, transmission lines, transformers, and shunt loads.
 
 After reading the elements and performing short-circuit calculations, as well as computing bus voltages and branch currents, I noticed an important limitation: inputting data solely through tables made system visualization very abstract. This increased the chances of typing errors and incorrect connections — especially in systems with a large number of buses and connected equipment.
