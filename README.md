@@ -114,7 +114,7 @@ Sets the font size for the labels.
 
 <summary>12 Bus</summary>
 
-![Diagrama Unifilar](examples/examples_5_12_bus.pdf)
+![Diagrama Unifilar](examples/examples_05_12_bus.pdf)
 
 </details>
 
