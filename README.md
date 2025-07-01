@@ -1,6 +1,6 @@
 # [Automatic One-Line Diagram](https://www.google.com/?hl=pt-BR)  
 <details>
-  <summary>***Context***</summary>
+  <summary>Context</summary>
 During an Electrical Engineering course, we were tasked with developing a tool to perform short-circuit calculations in electric power systems, similar to the Anafas simulator. The method used relied on Excel spreadsheets as data input, registering buses, transmission lines, transformers, and shunt loads.
 
 After reading the elements and performing short-circuit calculations, as well as computing bus voltages and branch currents, I noticed an important limitation: inputting data solely through tables made system visualization very abstract. This increased the chances of typing errors and incorrect connections — especially in systems with a large number of buses and connected equipment.
@@ -24,7 +24,8 @@ https://pandas.pydata.org/docs/
 
 ---
 
-## How to Use  
+<details>
+  <summary>Customization</summary>
 There are several parameters that can be configured to generate the diagram in the desired format. These include:  
 
 - Around line 65:  
@@ -32,16 +33,17 @@ There are several parameters that can be configured to generate the diagram in t
 posicao_elementos = nx.spring_layout(G, scale=8, iterations=300000, threshold=1e-10)
 ```
 
-***nx.spring_layout*** — Graph layout model, options:  
-- `spring_layout` → spring model  
-- `circular_layout` → arranged in a circle  
-- `shell_layout` → concentric layers  
-- `kamada_kawai_layout` → distance-preserving  
-- `random_layout` → random positions  
-- `spectral_layout` → based on eigenvalues  
-- `planar_layout` → no crossings (planar graph)  
-- `spiral_layout` → spiral arrangement  
-- `bipartite_layout(G, nodes)` → two groups (bipartite)
+| Layout                        | Keyword                       |
+|------------------------------|-------------------------------|
+| `nx.spring_layout`           | **Spring model**              |
+| `nx.circular_layout`         | **Arranged in a circle**      |
+| `nx.shell_layout`            | **Concentric layers**         |
+| `nx.kamada_kawai_layout`     | **Distance-preserving**       |
+| `nx.random_layout`           | **Random positions**          |
+| `nx.spectral_layout`         | **Based on eigenvalues**      |
+| `nx.planar_layout`           | **No crossings (planar graph)** |
+| `nx.spiral_layout`           | **Spiral arrangement**        |
+| `nx.bipartite_layout(G, nodes)` | **Two groups (bipartite)** |
 
 ***scale*** — spacing between graph vertices (elements), any number greater than zero.  
 
