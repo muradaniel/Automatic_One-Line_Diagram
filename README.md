@@ -82,6 +82,5 @@ d.config(fontsize=7)
 ```
 Adjusts the font size of the element labels in the diagram.
 
-```html
-<embed src="C:\Users\danie\PycharmProjects\Xlwings\examples\examples_05_12_bus.pdf" width="100%" height="600px" />
-```
+![Diagrama Unifilar](images/short_circuit_symbol.png)
+
