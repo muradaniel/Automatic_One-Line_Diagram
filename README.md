@@ -97,25 +97,3 @@ Sets the font size for the labels.
 
 <details>
 ---
-
-<summary>Examples</summary>
-
-<summary>4 Bus</summary>
-
-![Diagrama Unifilar](examples/examples_01_4_bus.pdf)
-
-</details>
-
-<summary>8 Bus</summary>
-
-![Diagrama Unifilar](examples/examples_02_8_bus.pdf)
-
-</details>
-
-<summary>12 Bus</summary>
-
-![Diagrama Unifilar](examples/examples_05_12_bus.pdf)
-
-</details>
-
-</details>
