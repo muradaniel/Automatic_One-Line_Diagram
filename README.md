@@ -39,7 +39,7 @@ There are several parameters that can be configured to generate the diagram in t
 > Around line 65:
 
 ```python
-posicao_elementos = nx.kamada_kawai_layout(G, scale=38)
+posicao_elementos = nx.spring_layout(G, scale=70, iterations=300000, threshold=1e-9)
 ```
 Here you can change 2 parameters, layout and/or scale.
 
@@ -58,6 +58,10 @@ Here you can change 2 parameters, layout and/or scale.
 | `nx.bipartite_layout(G, nodes)` | **Two groups (bipartite)**    |
 
 - **scale** — spacing between graph vertices. Any number > 0.  
+
+- **iterations** — spacing between graph vertices. Any number > 0.  
+
+- **threshold** — spacing between graph vertices. Any number > 0. 
 
 ---
 
@@ -95,5 +99,59 @@ d.config(fontsize=7)
 
 Sets the font size for the labels.
 
+</details>
 <details>
----
+  <summary>How to Use</summary>
+Para usar é necessário seguir alguns passos e tomar alguns cuidados ao longo do processo para evitar erros.
+- Preechimento da planilha excel *registration_elements.xlsx*
+Nessa planilha é a base de daddos da ferramenta desenvolvida, ou seja, é nela que você irá cadastrar os elementos do sistema elétrico de potência sendo eles: Barramentos, Linhas de Trnasmissão, Cargas Shunts, Geradores, e transformadores de 2 e 3 enrolamentos.
+
+Cada tipo de elemento está separado em cada planilha, sendo necesário o preenchimento de dados em todas as colunas.
+
+Outro ponto super imporante é: Cada elemento deve ter um nome diferente, o nomne do elemento é análogo as seu 'ID' caso seja preenchido valores iguais haverá superposição!!! por exemplo seu sistema há 1 linha de transmissão chamada "L1" e uma carga shunt chamada também "L1" quando rodar a simução ela não retornará erros, porem esses elementos irão compartilhar a mesmna poosição, ficando sbrepostos e bagunçando o toodo o diagrama.
+
+Outro ponto importante condiz com as cores do diagrama a base lida dos níveis de tensão estão continas na planilha de barras, ou seja, caso algum elemento use algum nível de tensão que não esteja na planilha "barra" não ficará colorido podendo gerar algum tipo de erro, sendo recomendado evitar.
+
+</details>
+<h2 align="left">Olá 👋! Meu nome é Daniel Murad e sou do Brasil</h2>
+
+###
+
+<img align="right" height="150" src="https://i.imgflip.com/65efzo.gif"  />
+
+###
+
+<div align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" height="30" alt="python logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/arduino/arduino-original.svg" height="30" alt="arduino logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/canva/canva-original.svg" height="30" alt="canva logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/networkx/networkx-original.svg" height="30" alt="networkx logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" height="30" alt="numpy logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" height="30" alt="pandas logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/anaconda/anaconda-original.svg" height="30" alt="anaconda logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kaggle/kaggle-original.svg" height="30" alt="kaggle logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/latex/latex-original.svg" height="30" alt="latex logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" height="30" alt="vscode logo"  />
+</div>
+
+###
+
+<div align="left">
+  <img src="https://img.shields.io/static/v1?message=Youtube&logo=youtube&label=&color=FF0000&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="youtube logo"  />
+  <img src="https://img.shields.io/static/v1?message=Instagram&logo=instagram&label=&color=E4405F&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="instagram logo"  />
+  <img src="https://img.shields.io/static/v1?message=Twitch&logo=twitch&label=&color=9146FF&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="twitch logo"  />
+  <img src="https://img.shields.io/static/v1?message=Discord&logo=discord&label=&color=7289DA&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="discord logo"  />
+  <img src="https://img.shields.io/static/v1?message=Gmail&logo=gmail&label=&color=D14836&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="gmail logo"  />
+  <img src="https://img.shields.io/static/v1?message=LinkedIn&logo=linkedin&label=&color=0077B5&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="linkedin logo"  />
+</div>
+
+###
